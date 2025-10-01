@@ -2,7 +2,7 @@
 
 A growing collection of open‑source portfolio templates used by Foliomade. Templates are built to a shared interface so they can be swapped easily and rendered from live portfolio data.
 
-We’d love your help! Contribute new templates, improve existing ones, or report bugs and ideas.
+We’d love your help! Contribute new templates, improve existing ones, or report bugs and ideas. See `CONTRIBUTING.md` for full guidelines.
 
 - Issues: open a ticket describing the problem or proposal
 - Pull Requests: follow the checklist below and link any related issue
@@ -155,6 +155,22 @@ ASTRO_BASE="/t/zen/" npm run build
 - Handles missing data gracefully (not‑found state)
 - Uses `siteConfig.accentColor` and appends `siteConfig.scripts`
 - No unrelated changes outside your template (unless fixing shared code)
+
+
+## Template Checklist
+
+Use `TEMPLATE_CHECKLIST.md` when creating a new template. Copy it into your template folder and ensure all items are complete before opening a PR.
+
+
+## CI Validation
+
+All PRs run a lightweight validation to catch common issues:
+
+- Ensures `astro.config.mjs` re-exports `_shared/astro.base.mjs`
+- Verifies `src/pages/index.astro` exists and uses `fetchSiteConfig` and `portfolioId`
+- Checks `preview.png` exists (warns if unusually large)
+
+See `.github/workflows/validate-templates.yml` and `scripts/validate-templates.mjs`.
 
 
 ## License
