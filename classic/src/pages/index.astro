@@ -1,0 +1,134 @@
+---
+import { fetchSiteConfig } from '../../../_shared/config';
+export const prerender = false;
+const portfolioId = Astro.url.searchParams.get('portfolioId');
+const siteConfig = await fetchSiteConfig(portfolioId);
+const notFound = !portfolioId || !siteConfig;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteConfig ? `${siteConfig.name} - ${siteConfig.title}` : 'Portfolio Not Found'}</title>
+    <meta name="description" content={siteConfig?.description || 'Developer portfolio'} />
+
+    <!-- Theming for browsers using the portfolio accent color -->
+    <meta name="theme-color" content={siteConfig?.accentColor || '#22c55e'} />
+    <meta name="msapplication-navbutton-color" content={siteConfig?.accentColor || '#22c55e'} />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+
+    <style>
+      :root { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; }
+      body { margin: 0; color: #0f172a; background: #f8fafc; line-height: 1.6; }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+      .badge { display:inline-block; padding:6px 12px; border-radius:999px; background: color-mix(in oklab, var(--accent) 90%, white); color:#0b1220; font-weight:600; font-size:12px; letter-spacing:.04em; border:1px solid color-mix(in oklab, var(--accent) 60%, #0000); }
+      h1 { margin: 14px 0 6px; font-size: 44px; letter-spacing:-0.01em; }
+      h2 { margin: 36px 0 12px; font-size: 22px; color:#0b1220; letter-spacing: 0; }
+      p { color:#334155; margin: 10px 0; }
+      .muted { color:#475569; }
+      .pill { display:inline-block; padding:8px 12px; border-radius:999px; background:#eef2f7; color:#0f172a; margin:6px 8px 0 0; font-size: 13px; border:1px solid #e5e9f2 }
+      .card { background:#ffffff; border:1px solid #e7ecf2; border-radius:14px; padding:18px 18px; margin: 14px 0; transition: box-shadow .18s ease, transform .18s ease; }
+      .card:hover { box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06); transform: translateY(-1px); }
+      a { color: var(--accent); text-decoration: none }
+      header { padding: 36px 0 18px; border-bottom: 1px solid #e7ecf2 }
+      footer { margin: 56px 0 24px; color:#64748b; font-size: 13px }
+      .section { padding-top: 8px; }
+      .section + .section { margin-top: 18px; }
+      .row { display:flex; justify-content:space-between; align-items:center; gap: 12px; }
+      .btn { display:inline-block; background: var(--accent); color: white; padding: 8px 12px; border-radius: 10px; font-size: 13px; font-weight:600; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.10); }
+      ul { padding-left: 18px; margin: 10px 0 0; }
+      li { margin: 6px 0; color:#334155 }
+    </style>
+  </head>
+  <body style={`--accent: ${siteConfig?.accentColor || '#22c55e'}`}>
+    {notFound ? (
+      <main style="min-height: 100vh; display:grid; place-items:center; background:#0b0f1a; color:#e5e7eb;">
+        <section style="text-align:center; max-width: 720px; padding: 2rem;">
+          <h1 style="font-size: clamp(2.25rem, 6vw, 4rem); line-height:1.05; margin:0 0 .75rem; font-weight:800;">Portfolio Not Found</h1>
+          <p style="color:#9ca3af; font-size: clamp(1rem, 1.2vw, 1.15rem); margin: 0 0 1.5rem;">The requested portfolio is private or does not exist.</p>
+          <a href="/" style="display:inline-block; padding:.7rem 1rem; border-radius:999px; border:1px solid rgba(148,163,184,.35); color:#e5e7eb; text-decoration:none; background-color: rgba(255,255,255,.06);">← Back to Home</a>
+        </section>
+      </main>
+    ) : (
+    <div class="wrap">
+      <header>
+        <h1>{siteConfig.name}</h1>
+        <div class="muted">{siteConfig.title}</div>
+        {siteConfig.resumeUrl && (
+          <div style="margin-top:12px">
+            <a href={siteConfig.resumeUrl} class="btn" target="_blank">View Resume</a>
+          </div>
+        )}
+      </header>
+
+      <section class="section">
+        <h2>About Me</h2>
+        <p>{siteConfig.aboutMe}</p>
+        {siteConfig.skills.length > 0 && (
+          <div style="margin-top:12px">
+            {siteConfig.skills.map((s) => <span class="pill">{s}</span>)}
+          </div>
+        )}
+      </section>
+
+      {siteConfig.experience.length > 0 && (
+        <section class="section">
+          <h2>Experience</h2>
+          {siteConfig.experience.map((e) => (
+            <div class="card">
+              <div><strong>{e.title}</strong> @ <span style={`color: var(--accent)`}>{e.company}</span></div>
+              {e.dateRange && <div class="muted" style="font-size:13px">{e.dateRange}</div>}
+              {e.bullets?.length > 0 && (
+                <ul>
+                  {e.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {siteConfig.education.length > 0 && (
+        <section class="section">
+          <h2>Education</h2>
+          {siteConfig.education.map((ed) => (
+            <div class="card">
+              <div><strong>{ed.degree}</strong></div>
+              <div style={`color: var(--accent)`}>{ed.school}</div>
+              {ed.dateRange && <div class="muted" style="font-size:13px">{ed.dateRange}</div>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {siteConfig.projects.length > 0 && (
+        <section class="section">
+          <h2>Projects</h2>
+          {siteConfig.projects.map((p) => (
+            <div class="card">
+              <div class="row">
+                <strong>{p.name}</strong>
+                {p.link && <a href={p.link} target="_blank">Visit</a>}
+              </div>
+              {p.description && <div class="muted" style="margin-top:8px">{p.description}</div>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      <footer>
+        © {new Date().getFullYear()} {siteConfig.name}
+        <span style="margin: 0 6px">•</span>
+        Powered by <a href="https://foliomade.com" target="_blank" rel="noopener noreferrer">Foliomade</a>
+      </footer>
+  </div>
+    )}
+    {siteConfig?.scripts && siteConfig.scripts.length > 0 && (
+      <>
+        {siteConfig.scripts.map((src) => <script src={src} defer />)}
+      </>
+    )}
+  </body>
+  </html>

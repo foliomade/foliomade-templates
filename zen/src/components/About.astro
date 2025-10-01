@@ -1,0 +1,10 @@
+---
+import Section from "./Section.astro";
+const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/config').PortfolioSiteConfig };
+---
+
+<Section text="About Me" href="about">
+  <div class="flex flex-col gap-6 md:gap-8">
+    <p class="w-auto text-base text-neutral md:pr-5">{siteConfig.aboutMe}</p>
+  </div>
+</Section>

@@ -1,0 +1,35 @@
+---
+const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/config').PortfolioSiteConfig };
+const currentYear = new Date().getFullYear();
+const social = siteConfig?.social ?? {} as any;
+const links = (
+  [
+    social.email ? { text: 'Email', href: `mailto:${social.email}` } : undefined,
+    social.linkedin ? { text: 'LinkedIn', href: social.linkedin } : undefined,
+    social.twitter ? { text: 'Twitter', href: social.twitter } : undefined,
+    social.github ? { text: 'GitHub', href: social.github } : undefined,
+  ].filter(Boolean) as Array<{ text: string; href: string }>
+);
+---
+
+<footer
+  class="w-full border-t border-neutral/20 px-5 pt-5 pb-8 text-center text-white"
+>
+  <ul class="mb-5 flex flex-wrap justify-center gap-x-5 text-xs">
+    {links.map(({ text, href }) => (
+      <li>
+        <a
+          href={href}
+          target="_blank"
+          class="inline-block px-4 py-3 after:relative after:bottom-[-4px] after:content-[url(/external.svg)] hover:text-primary"
+        >
+          {text}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="text-xs">
+    {siteConfig?.name || 'Portfolio'} © {currentYear}. <span class="text-neutral">Designed by</span> Moisés Machuca ·
+    <span class="text-neutral">Powered by</span> <a href="https://foliomade.com" target="_blank" rel="noopener" class="underline hover:text-primary">Foliomade</a>
+  </p>
+</footer>

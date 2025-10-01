@@ -1,0 +1,31 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { DEFAULT_ACCENT } from "../../../_shared/config";
+
+const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/config').PortfolioSiteConfig };
+---
+
+<!doctype html>
+<html lang="en" class="scroll-pt-16 scroll-smooth" style={`--accent: ${siteConfig?.accentColor || DEFAULT_ACCENT}` }>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={siteConfig?.description} />
+    <meta name="author" content={siteConfig?.name} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- Theming for browsers using the portfolio accent color -->
+    <meta name="theme-color" content={siteConfig?.accentColor || DEFAULT_ACCENT} />
+    <meta name="msapplication-navbutton-color" content={siteConfig?.accentColor || DEFAULT_ACCENT} />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>{siteConfig?.name} - {siteConfig?.title}</title>
+  </head>
+  <body class="bg-black font-sans">
+    <Header siteConfig={siteConfig} />
+    <main class="mx-auto max-w-3xl px-5">
+      <slot />
+    </main>
+    <Footer siteConfig={siteConfig} />
+  </body>
+</html>
