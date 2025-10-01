@@ -1,85 +1,171 @@
-Refactoring Astro Templates to PortfolioSiteConfig
+# Foliomade Open Templates
 
-This repo standardizes all portfolio templates to a single runtime configuration: `templates/_shared/config.ts` and the `PortfolioSiteConfig` interface. Use this guide to refactor any new Astro template to work with the platform.
+A growing collection of open‑source portfolio templates used by Foliomade. Templates are built to a shared interface so they can be swapped easily and rendered from live portfolio data.
 
-What to implement
-- Fetch site config at runtime: Use `fetchSiteConfig` from `templates/_shared/config` on the template’s `src/pages/index.astro`.
-- Pass `siteConfig` down: Thread the fetched `siteConfig` into all components via a single prop named `siteConfig`.
-- Render from the interface: Replace any template-local config or data with properties from `PortfolioSiteConfig`.
-- Keep scripts optional: If `siteConfig.scripts` exists, render each script tag with `defer` near the end of the page/body.
-- Use the shared Astro config: Replace the template’s `astro.config.mjs` with `export { default } from '../_shared/astro.base.mjs'` so the Node adapter is installed and server output is configured for previews.
+We’d love your help! Contribute new templates, improve existing ones, or report bugs and ideas.
 
-Reference interface
-- name: Full display name.
-- title: Professional title/role.
-- description: Short summary for meta/Hero.
-- accentColor: Hex or CSS color string.
-- social: { email?, linkedin?, twitter?, github? }
-- aboutMe: Long-form about text.
-- skills: string[]
-- projects: { name, description?, link?, skills? }[]
-- experience: { company, title, dateRange?, bullets: string[] }[]
-- education: { school, degree?, dateRange?, achievements: string[] }[]
-- scripts?: string[] (optional widget scripts)
+- Issues: open a ticket describing the problem or proposal
+- Pull Requests: follow the checklist below and link any related issue
 
-Step-by-step
-1) Page entry (index.astro)
-   - Import and call `fetchSiteConfig(portfolioId)`.
-   - Compute `baseUrl` from `Astro.url.origin` or `PUBLIC_API_BASE_URL` and accept `?apiBase=` and `?portfolioId=` from URL search params.
-   - Example (see `templates/aurora/src/pages/index.astro` or `templates/devportfolio/src/pages/index.astro`).
 
-2) Layout and Head
-- Remove any template-local config files. Do not hardcode content.
-- Set `<title>` to ``${siteConfig?.name} - ${siteConfig?.title}`` and `<meta name="description">` from `siteConfig.description`.
-- Optional: set a CSS custom property or inline style with `siteConfig.accentColor` if the template supports theming.
- - Ensure `export const prerender = false;` is set on `src/pages/index.astro` so the template runs with the Node adapter in preview mode.
+**Why Templates?**
+- Consistent data model across designs using a shared `TemplateInput` → `PortfolioSiteConfig` mapper.
+- Framework and tooling are preconfigured so you can focus on design and UX.
+- Public preview images make browsing templates simple for users.
 
-3) Components
-   - Accept `{ siteConfig: import('../../../_shared/config').PortfolioSiteConfig }` as the only prop.
-   - Header: Show anchors for existing sections (About, Projects, Experience, Education) based on data availability.
-   - Hero: Use `name`, `title` (as specialty/role), `description` (as summary), and `social.email` for a CTA mailto link.
-   - About: Use `aboutMe`. If the original template required an image, make it optional and render text-only if no image is available.
-   - Projects: Map from `siteConfig.projects`. Prefer text-first rendering; make images optional. Use `link` as the primary external link.
-   - Experience: Map from `siteConfig.experience` (company, title, dateRange, bullets[]).
-   - Education (if present): Map from `siteConfig.education`.
 
-4) Scripts (optional)
-   - If present, render `siteConfig.scripts.map((src) => <script src={src} defer />)` at the bottom of the page or within the Layout body.
+## Contribute or Report Bugs
 
-5) Types & imports
- - Do not re-declare types. Import the type inline where needed:
-   `const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/config').PortfolioSiteConfig }`.
- - Do not rely on local `@types` or `@config` for content.
-  - Avoid per-template npm dependencies (e.g., `@fontsource/*`). Prefer system fonts, a static `<link rel="preconnect">` + Google Fonts `<link>`, or fallbacks. This keeps builds working from the root without installing extra packages.
+- Create an issue with:
+  - What happened and what you expected
+  - Steps to reproduce (if a bug)
+  - Screenshots or preview links when helpful
+- Open a pull request when you’re ready. Keep changes focused on a single template or the shared tooling.
+- Be kind and keep discussions constructive — thank you!
 
-6) Keep styling intact
-- Preserve the template’s original styling and layout. Only swap data sources and make image/media optional where the shared interface doesn’t provide data.
-- If the template ships extra endpoints (e.g., `rss.xml.js`) that depend on external integrations like `@astrojs/rss`, replace them with a minimal, no-dependency handler or remove them for preview. Server output ignores `getStaticPaths()` unless `export const prerender = true;` is set — warnings are fine during preview.
- - If a template depends on Tailwind plugins not available at the repo root (e.g., `daisyui`, `@tailwindcss/typography`), add a minimal CDN fallback in the layout head for preview-only builds:
-   `<script src="https://cdn.tailwindcss.com"></script>` and `<script defer src="https://cdn.jsdelivr.net/npm/daisyui@4"></script>`.
-   Prefer proper integration when the project installs those plugins centrally.
 
-Good examples to follow
-- `templates/aurora` and `templates/devportfolio` show the expected patterns for fetching config, passing it down, and rendering from `PortfolioSiteConfig`.
+## Existing Templates (Gallery)
 
-Checklist before finishing
-- Page fetches config via `_shared/config` and passes `siteConfig` to all components.
-- No imports from a template-local config file remain.
-- Components only read from `siteConfig`.
-- Optional scripts rendered when provided.
-- Template still renders with sensible fallbacks when some data is missing (e.g., no project images).
-- Footer includes a visible “Powered by Foliomade” link to `https://foliomade.com`.
+- Classic
+  
+  ![Classic](classic/preview.png)
 
-Update the Preview Catalog
-- Add the template to the catalog shown in the dashboard preview UI so users can discover and launch it:
-  - File: `src/app/dashboard/portfolios/[id]/preview/PortfolioPreview.tsx`
-  - Constant: `TEMPLATE_CATALOG`
-  - Example entry:
-    `{ key: 'zen', name: 'Zen', description: 'Minimal, dark, typography-first portfolio.', technologies: ['Astro', 'Tailwind'] }`
-  - The preview link uses `/t/<key>?portfolioId=...`. Ensure the directory exists at `templates/<key>` and follows this guide.
+- DevPortfolio
+  
+  ![DevPortfolio](devportfolio/preview.png)
 
-Branding
-- Add a small credit in the footer for all templates:
-  - Example:
-    `<p class="text-xs">{siteConfig.name} © {currentYear}. <span class="text-neutral">Powered by</span> <a href="https://foliomade.com" target="_blank" rel="noopener" class="underline">Foliomade</a></p>`
-  - Keep it subtle and consistent; place it after any existing author/designer credits.
+- Zen
+  
+  ![Zen](zen/preview.png)
+
+- Modern (work in progress)
+
+
+## Tech Stack
+
+- `Astro` with Node adapter (middleware output)
+- `Tailwind CSS v4` via Vite plugin
+- Shared config and types in `_shared/`
+  - `_shared/types.ts` → `TemplateInput` schema
+  - `_shared/config.ts` → maps `TemplateInput` to `PortfolioSiteConfig`, fetches data, and injects optional widgets
+  - `_shared/astro.base.mjs` → base Astro config reused by every template
+
+
+## Template Requirements
+
+Every template must include the following in its own folder under `templates/` (e.g., `templates/yourtemplate/`):
+
+- `astro.config.mjs`: re‑export the shared base config
+  - `export { default } from '../_shared/astro.base.mjs'`
+- `src/pages/index.astro`: main page that renders from `PortfolioSiteConfig`
+- `preview.png`: a preview image used in listings and docs
+  - Suggested: 1600×900 or 1920×1080, `.png`, under ~600KB
+  - Place at the root of the template folder (e.g., `yourtemplate/preview.png`)
+- Optional: components, styles, and assets under `src/` and `public/`
+
+Recommended conventions:
+- Read `portfolioId` from the URL query (see sample below)
+- Use `fetchSiteConfig(portfolioId)` to get data and derived config
+- Respect `siteConfig.accentColor` and include `siteConfig.scripts`
+- Show a graceful “Portfolio Not Found” state when data is missing
+
+
+## Sample Implementation
+
+Minimal `src/pages/index.astro` using the shared API:
+
+```astro
+---
+export const prerender = false;
+import { fetchSiteConfig } from '../../../_shared/config';
+
+const portfolioId = Astro.url.searchParams.get('portfolioId');
+const siteConfig = await fetchSiteConfig(portfolioId);
+const notFound = !portfolioId || !siteConfig;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteConfig ? `${siteConfig.name} - ${siteConfig.title}` : 'Portfolio Not Found'}</title>
+    <meta name="description" content={siteConfig?.description || 'Developer portfolio'} />
+    <meta name="theme-color" content={siteConfig?.accentColor || '#22c55e'} />
+  </head>
+  <body style={`--accent: ${siteConfig?.accentColor || '#22c55e'}`}>
+    {notFound ? (
+      <main>Portfolio Not Found</main>
+    ) : (
+      <main>
+        <h1>{siteConfig.name}</h1>
+        <p>{siteConfig.title}</p>
+        <!-- Your sections go here (About, Projects, Experience, etc.) -->
+      </main>
+    )}
+    {siteConfig?.scripts?.map((src) => <script src={src} defer />)}
+  </body>
+</html>
+```
+
+This mirrors how the existing templates work. For a richer example, compare `classic/src/pages/index.astro`, `devportfolio/src/pages/index.astro`, and `zen/src/pages/index.astro`.
+
+
+## API Integration
+
+Data flow for all templates:
+
+- Templates read `portfolioId` from the query string: `?portfolioId=<id>`
+- `fetchSiteConfig(portfolioId)` makes a GET request to `/api/public/portfolios/:id` and returns a derived `PortfolioSiteConfig`
+- The mapper adds optional scripts based on the input:
+  - Chat widget if `enableFaqs` and `id` are present
+  - Analytics widget when `id` is present
+  - Calendar widget when `calendarUrl` is present
+
+Environment variables used by the shared code:
+
+- `ASTRO_BASE` (required for production builds): base path like `/t/<template>/`
+- `PUBLIC_APP_BASE_URL` (browser): base URL for hosted widgets or API if not same‑origin
+- `TEMPLATES_SSR_API_BASE_URL` (server): override base URL for SSR fetches; otherwise defaults to `http://localhost:${PORT||3100}`
+
+Notes:
+- In dev, `Astro.url.searchParams` is available on the server side; set `export const prerender = false;` so templates render dynamically.
+- Keep templates defensive: if `siteConfig` is undefined, render the “not found” state.
+
+
+## Local Development
+
+You can develop a template in isolation:
+
+- Navigate into a template folder (e.g., `cd templates/zen`)
+- Install deps and run the dev server (`npm i && npm run dev` or `pnpm i && pnpm dev`)
+- Open the local URL and pass a test `portfolioId` in the query string
+
+For production builds of templates inside this monorepo, set `ASTRO_BASE` to the deployed subpath for the template, for example:
+
+```bash
+ASTRO_BASE="/t/zen/" npm run build
+```
+
+
+## Pull Request Checklist
+
+- Folder is `templates/<your‑template‑name>/`
+- Includes `astro.config.mjs` that re‑exports `_shared/astro.base.mjs`
+- Includes `src/pages/index.astro` that renders from `fetchSiteConfig`
+- Includes `preview.png` at the template root
+- Handles missing data gracefully (not‑found state)
+- Uses `siteConfig.accentColor` and appends `siteConfig.scripts`
+- No unrelated changes outside your template (unless fixing shared code)
+
+
+## License
+
+Unless otherwise noted inside a template folder, contributions are released under the repository’s root license.
+
+
+## Need Help?
+
+- Open an issue with questions or ideas
+- Suggest improvements to this documentation
+- Share examples of your portfolio built with these templates
+
+Thanks for making the template gallery better for everyone!
