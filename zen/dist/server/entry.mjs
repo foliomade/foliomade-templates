@@ -1,14 +1,16 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_ps2Fu_48.mjs';
-import { manifest } from './manifest_B3UixZT2.mjs';
+import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_h9n2lgML.mjs';
+import { manifest } from './manifest_CSWf2Htl.mjs';
 
 const serverIslandMap = new Map();;
 
 const _page0 = () => import('./pages/_image.astro.mjs');
-const _page1 = () => import('./pages/index.astro.mjs');
+const _page1 = () => import('./pages/404.astro.mjs');
+const _page2 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["../../node_modules/astro/dist/assets/endpoint/node.js", _page0],
-    ["src/pages/index.astro", _page1]
+    ["src/pages/404.astro", _page1],
+    ["src/pages/index.astro", _page2]
 ]);
 
 const _manifest = Object.assign(manifest, {
