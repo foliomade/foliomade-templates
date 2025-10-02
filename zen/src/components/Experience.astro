@@ -5,7 +5,7 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
 
 <Section text="Work Experience" href="experience">
   {
-    siteConfig.experience.map(({ company, title, dateRange, bullets }) => (
+    siteConfig.experience.map(({ company, title, dateRange, bullets, techStack }) => (
       <div class="mb-10">
         <h3 class="mb-1.5 font-serif text-2xl font-semibold text-white">
           {company}
@@ -26,6 +26,19 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
               </li>
             ))}
           </ul>
+        )}
+        {techStack && (
+          <div class="mt-3 flex flex-wrap gap-2">
+            {techStack
+              .split(/[,|]/)
+              .map((t) => t.trim())
+              .filter(Boolean)
+              .map((t) => (
+                <span class="inline-block rounded-full bg-white/5 border border-white/10 text-white/80 px-2.5 py-1 text-xs">
+                  {t}
+                </span>
+              ))}
+          </div>
         )}
       </div>
     ))

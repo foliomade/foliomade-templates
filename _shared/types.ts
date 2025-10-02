@@ -21,6 +21,7 @@ export type TemplateInput = {
     description?: string | null
     bullets?: string[]
     location?: string | null
+    techStack?: string | null
   }>
 
   education?: Array<{

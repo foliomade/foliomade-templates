@@ -85,6 +85,18 @@ const notFound = !portfolioId || !siteConfig;
                   {e.bullets.map((b) => <li>{b}</li>)}
                 </ul>
               )}
+              {e.techStack && (
+                <div style="margin-top:6px">
+                  <div class="muted" style="font-size:13px; margin-bottom:4px">Tech Stack</div>
+                  <div>
+                    {e.techStack
+                      .split(/[,|]/)
+                      .map((t) => t.trim())
+                      .filter(Boolean)
+                      .map((t) => <span class="pill">{t}</span>)}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </section>

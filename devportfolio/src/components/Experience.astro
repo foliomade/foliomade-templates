@@ -62,6 +62,19 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
                         </li>
                       ))}
                     </ul>
+                    {exp.techStack && (
+                      <div class="mt-4 flex flex-wrap gap-2">
+                        {exp.techStack
+                          .split(/[,|]/)
+                          .map((t) => t.trim())
+                          .filter(Boolean)
+                          .map((t) => (
+                            <span class="inline-block rounded-full bg-gray-100 text-gray-700 px-2.5 py-1 text-xs">
+                              {t}
+                            </span>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

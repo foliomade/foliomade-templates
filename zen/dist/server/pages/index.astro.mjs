@@ -13,7 +13,8 @@ const $$Hero = createComponent(($$result, $$props, $$slots) => {
   const specialty = siteConfig?.title;
   const summary = siteConfig?.description;
   const email = siteConfig?.social?.email;
-  return renderTemplate`${maybeRenderHead()}<section class="py-24 md:py-32" id="hero"> <h1 class="mb-1.5 font-serif text-7xl font-bold tracking-tightest text-white sm:text-8xl md:mb-0 md:text-9xl"> ${name} </h1> <p class="mb-9 font-serif text-4xl leading-[46px] font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl"> ${specialty} </p> <p class="mb-16 text-base font-normal text-neutral md:text-lg"> ${summary} </p> <a class="inline-block rounded-full bg-primary px-8 py-5 text-sm leading-5 font-medium text-[#fff]"${addAttribute(`mailto:${email}`, "href")}>Get in Touch</a> </section>`;
+  const resumeUrl = siteConfig?.resumeUrl;
+  return renderTemplate`${maybeRenderHead()}<section class="py-24 md:py-32" id="hero"> <h1 class="mb-1.5 font-serif text-7xl font-bold tracking-tightest text-white sm:text-8xl md:mb-0 md:text-9xl"> ${name} </h1> <p class="mb-9 font-serif text-4xl leading-[46px] font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl"> ${specialty} </p> <p class="mb-16 text-base font-normal text-neutral md:text-lg"> ${summary} </p> <div class="flex flex-wrap items-center gap-3"> <a class="inline-block rounded-full bg-primary px-8 py-5 text-sm leading-5 font-medium text-[#fff]"${addAttribute(`mailto:${email}`, "href")}>Get in Touch</a> ${resumeUrl && renderTemplate`<a class="inline-block rounded-full border border-primary text-primary px-8 py-5 text-sm leading-5 font-medium hover:bg-primary/10"${addAttribute(resumeUrl, "href")} target="_blank" rel="noopener noreferrer">View Resume</a>`} </div> </section>`;
 }, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/zen/src/components/Hero.astro", void 0);
 
 const $$Menu = createComponent(($$result, $$props, $$slots) => {
@@ -69,7 +70,8 @@ function buildPortfolioSiteConfig(input) {
     company: e.companyName,
     title: e.title,
     dateRange: [e.startDate, e.endDate].filter(Boolean).join(" - ") || void 0,
-    bullets: (e.bullets && e.bullets.length ? e.bullets : (e.description || "").split(/\n|•|-/).map((b) => b.trim()).filter(Boolean)) || []
+    bullets: (e.bullets && e.bullets.length ? e.bullets : (e.description || "").split(/\n|•|-/).map((b) => b.trim()).filter(Boolean)) || [],
+    techStack: e.techStack || void 0
   }));
   const education = (input.education || []).map((ed) => ({
     school: ed.school,
@@ -164,7 +166,7 @@ const $$Experience = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
   Astro2.self = $$Experience;
   const { siteConfig } = Astro2.props;
-  return renderTemplate`${renderComponent($$result, "Section", $$Section, { "text": "Work Experience", "href": "experience" }, { "default": ($$result2) => renderTemplate`${siteConfig.experience.map(({ company, title, dateRange, bullets }) => renderTemplate`${maybeRenderHead()}<div class="mb-10"> <h3 class="mb-1.5 font-serif text-2xl font-semibold text-white"> ${company} </h3> <div class="flex flex-col items-start pb-5"> <h4 class="mb-0.5 font-serif text-2xl font-medium text-primary"> ${title} </h4> <span class="pb-[2px] text-sm text-white/70"> ${dateRange} </span> </div> ${bullets && bullets.length > 0 && renderTemplate`<ul class="list-none"> ${bullets.map((log) => renderTemplate`<li class="relative mb-3 pl-8 text-base text-neutral before:absolute before:top-1 before:left-0 before:content-[url(/check.svg)]"> ${log} </li>`)} </ul>`} </div>`)}` })}`;
+  return renderTemplate`${renderComponent($$result, "Section", $$Section, { "text": "Work Experience", "href": "experience" }, { "default": ($$result2) => renderTemplate`${siteConfig.experience.map(({ company, title, dateRange, bullets, techStack }) => renderTemplate`${maybeRenderHead()}<div class="mb-10"> <h3 class="mb-1.5 font-serif text-2xl font-semibold text-white"> ${company} </h3> <div class="flex flex-col items-start pb-5"> <h4 class="mb-0.5 font-serif text-2xl font-medium text-primary"> ${title} </h4> <span class="pb-[2px] text-sm text-white/70"> ${dateRange} </span> </div> ${bullets && bullets.length > 0 && renderTemplate`<ul class="list-none"> ${bullets.map((log) => renderTemplate`<li class="relative mb-3 pl-8 text-base text-neutral before:absolute before:top-1 before:left-0 before:content-[url(/check.svg)]"> ${log} </li>`)} </ul>`} ${techStack && renderTemplate`<div class="mt-3 flex flex-wrap gap-2"> ${techStack.split(/[,|]/).map((t) => t.trim()).filter(Boolean).map((t) => renderTemplate`<span class="inline-block rounded-full bg-white/5 border border-white/10 text-white/80 px-2.5 py-1 text-xs"> ${t} </span>`)} </div>`} </div>`)}` })}`;
 }, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/zen/src/components/Experience.astro", void 0);
 
 const $$Astro$2 = createAstro();

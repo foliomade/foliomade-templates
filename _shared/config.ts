@@ -26,6 +26,7 @@ export type PortfolioSiteConfig = {
     title: string;
     dateRange?: string;
     bullets: string[];
+    techStack?: string;
   }>;
   education: Array<{
     school: string;
@@ -70,6 +71,7 @@ export function buildPortfolioSiteConfig(input: TemplateInput): PortfolioSiteCon
             .split(/\n|•|-/)
             .map((b) => b.trim())
             .filter(Boolean)) || [],
+    techStack: e.techStack || undefined,
   }));
 
   const education = (input.education || []).map((ed) => ({
