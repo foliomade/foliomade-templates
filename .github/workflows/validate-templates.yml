@@ -18,4 +18,4 @@ jobs:
           node-version: '18'
 
       - name: Validate template structure
-        run: node scripts/validate-templates.mjs
+        run: node _scripts/validate-templates.mjs

@@ -170,7 +170,7 @@ All PRs run a lightweight validation to catch common issues:
 - Verifies `src/pages/index.astro` exists and uses `fetchSiteConfig` and `portfolioId`
 - Checks `preview.png` exists (warns if unusually large)
 
-See `.github/workflows/validate-templates.yml` and `scripts/validate-templates.mjs`.
+See `.github/workflows/validate-templates.yml` and `_scripts/validate-templates.mjs`.
 
 
 ## License
