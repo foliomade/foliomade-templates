@@ -1,0 +1,51 @@
+---
+// 404 page for Zen template
+export const prerender = false;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>404 — Page Not Found</title>
+    <meta name="description" content="The page you requested could not be found." />
+    <style>
+      :root { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; }
+      body { margin: 0; color: #e5e7eb; background: #000; }
+      .bg { position: fixed; inset: 0; background: radial-gradient(1200px 800px at 50% -10%, #0b1220 0%, #0b0f1a 45%, #0a0a0a 100%); opacity: .95; }
+      .wrap { position: relative; min-height: 100vh; display:grid; place-items:center; padding: 24px; }
+      .card { text-align:center; max-width: 860px; }
+      .tag { display:inline-block; padding:6px 12px; border-radius:999px; background: rgba(99,102,241,.14); color:#c7d2fe; font-weight:600; font-size:12px; letter-spacing:.04em; border:1px solid rgba(99,102,241,.28); }
+      h1 { margin: 12px 0 4px; font-size: clamp(2rem, 5vw, 3.25rem); letter-spacing: -0.01em; font-weight: 800; }
+      p { color:#a1a1aa; margin: 10px 0; font-size: 1.025rem; }
+      .img { display:block; margin: 0 auto 12px; width: min(620px, 92vw); height: auto; filter: drop-shadow(0 10px 40px rgba(99,102,241,.32)); }
+      .row { display:flex; gap: 12px; justify-content:center; flex-wrap:wrap; margin-top: 18px; }
+      .btn { display:inline-block; padding: 11px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; }
+      .primary { background: linear-gradient(90deg, #6366f1 0%, #10b981 100%); color: white; box-shadow: 0 6px 22px rgba(99,102,241,.35); }
+      .secondary { color:#e5e7eb; border:1px solid rgba(148,163,184,.35); background-color: rgba(255,255,255,.06); }
+      footer { margin-top: 26px; color:#a1a1aa; font-size: 13px; }
+      a { color: #c7d2fe; text-decoration: none }
+    </style>
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+    <main class="wrap">
+      <section class="card">
+        <img src="/assets/falling.png" alt="Lost astronaut falling" class="img" width="1120" height="700" loading="lazy" />
+        <div class="tag">404 — Page Not Found</div>
+        <h1>You found the quiet space between pages.</h1>
+        <p>
+          Create a clean, modern portfolio from your resume — share it anywhere, embed it on your site, and keep it updated.
+        </p>
+        <div class="row">
+          <a class="btn primary" href="/">Create a portfolio using your resume</a>
+          <a class="btn secondary" href="/">Go back home</a>
+        </div>
+        <footer>
+          Crafted with <a href="/" rel="noopener">Foliomade</a> — a simple way to publish a beautiful portfolio from your resume.
+        </footer>
+      </section>
+    </main>
+  </body>
+  </html>
+

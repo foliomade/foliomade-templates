@@ -1,0 +1,265 @@
+---
+export const prerender = false;
+import { fetchSiteConfig } from '../../../_shared/config';
+
+const portfolioId = Astro.url.searchParams.get('portfolioId');
+const siteConfig = await fetchSiteConfig(portfolioId);
+const notFound = !portfolioId || !siteConfig;
+
+type TL = { year: string; duration: string; title: string; company: string; lines: string[]; techStack?: string };
+
+function parseDateFlexible(s?: string | null): Date | null {
+  if (!s) return null;
+  const str = String(s).trim();
+  if (!str) return null;
+  if (/^(present|now|current)$/i.test(str)) return new Date();
+  const d1 = new Date(str);
+  if (!isNaN(d1.getTime())) return d1;
+  const mYear = str.match(/^(\d{4})$/);
+  if (mYear) return new Date(Number(mYear[1]), 0, 1);
+  const mYm = str.match(/^(\d{4})[-/](\d{1,2})$/);
+  if (mYm) return new Date(Number(mYm[1]), Number(mYm[2]) - 1, 1);
+  return null;
+}
+
+function computeTimeline(e: any): TL {
+  const start = parseDateFlexible(e.startDate) || (e.dateRange ? parseDateFlexible(String(e.dateRange).split(/\s*-\s*/)[0]) : null);
+  const end = parseDateFlexible(e.endDate) || (e.dateRange ? parseDateFlexible(String(e.dateRange).split(/\s*-\s*/)[1]) : null);
+  const year = start ? String(start.getFullYear()) : '-';
+  let duration = '-';
+  if (start && end) {
+    const ms = Math.max(0, end.getTime() - start.getTime());
+    const years = ms / (1000 * 60 * 60 * 24 * 365.25);
+    duration = `${years.toFixed(2)} years`;
+  }
+  const lines: string[] = Array.isArray(e.bullets) && e.bullets.length
+    ? e.bullets
+    : (e.description ? String(e.description).split(/\n|•|-/).map((s: string) => s.trim()).filter(Boolean) : []);
+  return { year, duration, title: e.title, company: e.company, lines, techStack: e.techStack };
+}
+
+const timeline: TL[] = !notFound ? (siteConfig?.experience || []).map(computeTimeline) : [];
+---
+<html lang="en"  style={`--accent: ${siteConfig?.accentColor || '#22c55e'}`}>
+  <head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteConfig ? `${siteConfig.name} - ${siteConfig.title}` : 'Portfolio Not Found'}</title>
+      <meta name="description" content={siteConfig?.description || 'Developer portfolio'} />
+
+      <!-- Use original Stem/Ashton CSS to preserve look-and-feel -->
+      <link rel="stylesheet" href="https://ashton.websitelayout.net/css/plugins.css" />
+      <link rel="stylesheet" href="https://ashton.websitelayout.net/css/style.css" />
+      <!-- No external icon font; inline SVGs used below -->
+
+      <!-- Provide accent color to the browser UI -->
+      <meta name="theme-color" content={siteConfig?.accentColor || '#3175D1'} />
+      <meta name="msapplication-navbutton-color" content={siteConfig?.accentColor || '#3175D1'} />
+
+      <style>
+        :root { --accent: {siteConfig?.accentColor || '#3175D1'}; }
+        /* Small utilities to adapt dynamic content gracefully */
+        .pill { display:inline-block; padding:6px 10px; border-radius:20px; background:#eef2f7; border:1px solid #e5e9f2; margin:4px 6px 0 0; font-size:12px; }
+        .muted { color:#64748b; }
+        .card { background:#fff; border:1px solid #e7ecf2; border-radius:12px; padding:16px; margin:10px 0; }
+        .btn-accent { background: var(--accent); color:#fff; border-radius:8px; padding:8px 12px; text-decoration:none; display:inline-block; }
+        .social-links a { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:999px; border:1px solid #e5e9f2; color:#0f172a; margin-right:8px; transition: background .15s ease, color .15s ease; }
+        .social-links a:hover { background: var(--accent); color:#fff; }
+      .social-links svg { width:18px; height:18px; fill: currentColor; }
+      /* Portfolio grid */
+      .portfolio-grid { display:flex; flex-wrap:wrap; gap: 16px; }
+        .portfolio-card { position:relative; flex:1 1 300px; min-width:260px; background:#ffffff; border:1px solid #e7ecf2; border-radius:12px; padding:22px; transition: box-shadow .18s ease, transform .18s ease; }
+        .portfolio-card:hover { box-shadow: 0 4px 20px rgba(15,23,42,.08); transform: translateY(-2px); }
+        .portfolio-card .content { position:relative; z-index:1; }
+        .link-chip { display:inline-block; border:1px solid #e5e9f2; background:#f8fafc; color:#0f172a; padding:8px 10px; border-radius:10px; margin:6px 8px 0 0; font-size:13px; }
+        .link-chip:hover { color:#0f172a; text-decoration:none; border-color: color-mix(in oklab, var(--accent) 40%, #e5e9f2); }
+        .icon-link { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:999px; border:1px solid #e5e9f2; color:#0f172a; transition: background .15s ease, color .15s ease; }
+        .icon-link:hover { background: var(--accent); color:#fff; text-decoration:none; }
+        .icon-link svg { width:18px; height:18px; fill: currentColor; }
+        /* Experience bullets */
+        .experience-bullets { margin: 8px 0 0; padding-left: 1px; list-style: disc; }
+        .experience-bullets li { margin: 10px 0; color:#334155; }
+        /* Experience timeline accent overrides */
+        .main-timeline .date-outer .date { border-color: var(--accent); }
+      </style>
+
+  </head>
+  <body>
+    {notFound ? (
+      <main style="min-height: 100vh; display:grid; place-items:center; background:#0b0f1a; color:#e5e7eb;">
+        <section style="text-align:center; max-width: 720px; padding: 2rem;">
+          <h1 style="font-size: clamp(2.25rem, 6vw, 4rem); line-height:1.05; margin:0 0 .75rem; font-weight:800;">Portfolio Not Found</h1>
+          <p style="color:#9ca3af; font-size: clamp(1rem, 1.2vw, 1.15rem); margin: 0 0 1.5rem;">The requested portfolio is private or does not exist.</p>
+          <a href="/" style="display:inline-block; padding:.7rem 1rem; border-radius:999px; border:1px solid rgba(148,163,184,.35); color:#e5e7eb; text-decoration:none; background-color: rgba(255,255,255,.06);">← Back to Home</a>
+        </section>
+      </main>
+    ) : (
+      <>
+        <!-- Top banner/hero -->
+        <div class="bg-light-gray sm-padding-75px-top" data-scroll-index="0">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-7 col-sm-12 order-2 order-md-1 xs-padding-50px-tb">
+                <div class="padding-twenty-top sm-padding-fifteen-top xs-no-padding">
+                  <h5 class="no-margin font-size18 xs-font-size16 text-medium-gray padding-fifteen-top md-padding-eight-top sm-padding-five-top xs-no-padding">Hello, I am</h5>
+                  <h1  style="color: var(--accent)" class="mt-2 text-uppercase font-size48 md-font-size42 sm-font-size36 xs-font-size26 font-weight-800 margin-20px-bottom">{siteConfig.name}</h1>
+                  <p class="width-50 md-width-75 xs-width-100 font-size16 xs-font-size14 border-top border-bottom padding-10px-tb">{siteConfig.title}</p>
+                  <div class="social-links margin-30px-bottom xs-margin-20px-bottom">
+                    {siteConfig?.social?.linkedin && (
+                      <a href={siteConfig.social.linkedin} target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8.5h4.96V24H.5zM8 8.5h4.77v2.12h.07c.66-1.25 2.27-2.57 4.67-2.57 4.99 0 5.9 3.29 5.9 7.56V24h-5V16c0-1.91-.03-4.37-2.66-4.37-2.66 0-3.07 2.08-3.07 4.23V24H8z"/></svg>
+                      </a>
+                    )}
+                    {siteConfig?.social?.github && (
+                      <a href={siteConfig.social.github} target="_blank" aria-label="GitHub" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5 0 6.23 0 12.5c0 5.3 3.44 9.8 8.21 11.38.6.11.8-.26.8-.58 0-.28-.01-1.02-.02-1.99-3.34.73-4.05-1.6-4.05-1.6-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.85 1.23 1.85 1.23 1.07 1.84 2.8 1.31 3.49 1 .11-.78.42-1.3.76-1.6-2.68-.31-5.49-1.33-5.49-5.9 0-1.3.47-2.36 1.24-3.2-.12-.3-.54-1.55.12-3.25 0 0 1.01-.32 3.3 1.22.96-.27 1.99-.41 3.01-.41s2.05.14 3.01.41c2.29-1.54 3.3-1.22 3.3-1.22.66 1.7.24 2.95.12 3.25.77.84 1.24 1.9 1.24 3.2 0 4.58-2.81 5.58-5.5 5.89.43.37.81 1.09.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.21.69.81.57C20.56 22.29 24 17.79 24 12.5 24 6.23 18.27.5 12 .5z"/></svg>
+                      </a>
+                    )}
+                    {siteConfig?.social?.twitter && (
+                      <a href={siteConfig.social.twitter} target="_blank" aria-label="Twitter" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 4.8a9.2 9.2 0 0 1-2.65.73A4.6 4.6 0 0 0 22.38 3a9.23 9.23 0 0 1-2.92 1.12 4.6 4.6 0 0 0-7.85 4.2A13.06 13.06 0 0 1 3.16 3.9a4.6 4.6 0 0 0 1.42 6.13 4.54 4.54 0 0 1-2.08-.58v.06a4.6 4.6 0 0 0 3.69 4.51 4.6 4.6 0 0 1-2.07.08 4.6 4.6 0 0 0 4.29 3.19A9.22 9.22 0 0 1 1 20.54 13 13 0 0 0 8.04 22.5c7.75 0 12-6.42 12-11.98 0-.18-.01-.35-.02-.53A8.5 8.5 0 0 0 23 4.8z"/></svg>
+                      </a>
+                    )}
+                    {siteConfig?.social?.email && (
+                      <a href={`mailto:${siteConfig.social.email}`} aria-label="Email">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5h20a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2v.2l10 6.25L22 7.2V7H2zm20 10V9.04l-10 6.25L2 9.04V17h20z"/></svg>
+                      </a>
+                    )}
+                  </div>
+                  {siteConfig?.resumeUrl && (<a class="btn white" href={siteConfig.resumeUrl} target="_blank">View My Resume <img style="height: 25px" src="/assets/arrow_right.svg"  alt="Arrow right" /></a>)}
+                  <div class="mt-3">&nbsp;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About + Skills (2-column; stacks on mobile) -->
+        <section class="section" data-scroll-index="1">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <h3>I am...</h3>
+                <p class="muted" style="white-space: pre-line; max-width: 760px;">{siteConfig.aboutMe}</p>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                {siteConfig.skills?.length > 0 ? (
+                  <div style="margin-top:8px">
+                    {siteConfig.skills.map((s) => <span class="pill">{s}</span>)}
+                  </div>
+                ) : (
+                  <p class="muted">Add your top skills to highlight your strengths.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Experience (Timeline) -->
+        {siteConfig.experience?.length > 0 && (
+          <section class="bg-light-gray" data-scroll-index="2">
+            <div class="container">
+              <div class="row">
+                <div class="col-12 center-col margin-70px-bottom sm-margin-40px-bottom xs-margin-30px-bottom text-center">
+                  <h3 class="font-weight-700 font-size32 md-font-size27 sm-font-size24 xs-font-size20 section-title">My Experience</h3>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="main-timeline">
+                    {timeline.map((t) => (
+                      <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="date-content">
+                          <div class="date-outer">
+                            <span class="date">
+                              <span class="month">{t.duration}</span>
+                              <span class="year">{t.year}</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="timeline-content">
+                          <h5 class="title">{t.title}</h5>
+                          <p><strong style="color: var(--accent)">{t.company}</strong></p>
+                          {t.lines.length > 0 && (
+                            <ul class="experience-bullets">
+                              {t.lines.map((ln) => <li>• {ln}</li>)}
+                            </ul>
+                          )}
+                          {t.techStack && (
+                            <div class="muted" style="margin-top:6px; font-size:13px">{t.techStack}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <!-- Projects / Portfolio -->
+        {(siteConfig.projects?.length > 0 || siteConfig.links?.length > 0) && (
+          <section class="section" data-scroll-index="3">
+            <div class="container">
+              <h3>Projects</h3>
+              {siteConfig.projects?.length > 0 && (
+                <div class="portfolio-grid" style="margin-top:12px">
+                  {siteConfig.projects.map((p) => (
+                    <div class="portfolio-card">
+                      <div class="content">
+                        <div class="row" style="justify-content: space-between; align-items: center; gap: 12px;">
+                          <strong class="px-2" style="line-height:1.2">{p.name}</strong>
+                        </div>
+                        {p.description && <div class="muted" style="margin-top:6px">{p.description}</div>}
+                        {p.link && (
+                          <div style="margin-top:8px">
+                            <a href={p.link} target="_blank" rel="noopener noreferrer" style={`color: var(--accent); text-decoration:none; word-break: break-all;`}>
+                              {p.link}
+                            </a>
+                          </div>
+                        )}
+                        {p.skills?.length && (
+                          <div style="margin-top:6px">
+                            {p.skills?.map((s) => <span class="pill">{s}</span>)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {siteConfig.links?.length > 0 && (
+                <div style="margin-top:24px">
+                  <h4 style="margin:0 0 8px">More Links</h4>
+                  <div>
+                    {siteConfig.links.map((l) => (
+                      <a class="link-chip" href={l.url} target="_blank" rel="noopener noreferrer">{l.name}</a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        <footer class="text-center" style="padding: 24px 0; color:#64748b">
+          © {new Date().getFullYear()} {siteConfig.name}
+          <span style="margin: 0 6px">•</span>
+          Powered by <a href="https://foliomade.com" target="_blank" rel="noopener noreferrer">Foliomade</a>
+        </footer>
+
+        {siteConfig?.scripts && siteConfig.scripts.length > 0 && (
+          <>
+            {siteConfig.scripts.map((src) => (
+              <script src={src} defer></script>
+            ))}
+          </>
+        )}
+      </>
+    )}
+  </body>
+  </html>
