@@ -8,20 +8,20 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
     siteConfig.projects.map((p, index) => {
       const top = 98 + index * 40;
       return (
-        <div style={`top: ${top}px;`} class="sticky mb-12 rounded-2xl border border-neutral/20 bg-black">
-          <div class="relative z-[1] w-full rounded-2xl bg-[#1c232d]/85 before:absolute before:inset-0 before:z-[-1] before:rounded-2xl before:bg-[url(/raja.png)] before:bg-[length:128px] before:bg-repeat before:opacity-[5%] before:content-['']">
+        <div style={`top: ${top}px;`} class="sticky mb-12 rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)]">
+          <div class="relative z-[1] w-full rounded-2xl bg-[var(--card)] before:absolute before:inset-0 before:z-[-1] before:rounded-2xl before:bg-[url(/raja.png)] before:bg-[length:128px] before:bg-repeat before:opacity-[5%] before:content-['']">
             <div class="px-6 py-12">
               <h3 class="mb-3 font-serif text-3xl font-medium text-primary">{p.name}</h3>
-              {p.description && <p class="text-base text-neutral">{p.description}</p>}
+              {p.description && <p class="text-base text-[var(--text-muted)]">{p.description}</p>}
               {p.skills && p.skills.length > 0 && (
                 <div class="mt-4 flex flex-wrap gap-2">
                   {p.skills.slice(0,6).map((s) => (
-                    <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-white/90 border border-white/15">{s}</span>
+                    <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--chip-bg)] text-[var(--chip-text)] border border-[var(--chip-border)]">{s}</span>
                   ))}
                 </div>
               )}
               {p.link && (
-                <div class="flex gap-5 pt-8 text-white">
+                <div class="flex gap-5 pt-8 text-[var(--text)]">
                   <a
                     href={p.link}
                     target="_blank"

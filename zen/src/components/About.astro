@@ -5,6 +5,6 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
 
 <Section text="About Me" href="about">
   <div class="flex flex-col gap-6 md:gap-8">
-    <p class="w-auto text-base text-neutral md:pr-5" style="white-space: pre-line;">{siteConfig.aboutMe}</p>
+    <p class="w-auto text-base text-[var(--text-muted)] md:pr-5" style="white-space: pre-line;">{siteConfig.aboutMe}</p>
   </div>
 </Section>

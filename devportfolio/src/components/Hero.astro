@@ -4,15 +4,13 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
 
 <div
   id="hero"
-  class="relative isolate overflow-hidden bg-white py-24 md:h-screen"
+  class="relative isolate overflow-hidden bg-[var(--bg)] py-24 md:h-screen"
   style={`--accent-color: ${siteConfig.accentColor}`}
 >
   <!-- Gradient overlay -->
-  <div
-    class="absolute inset-0 -z-10"
-    style={`background: radial-gradient(ellipse 800px 1200px at 0% 0%, ${siteConfig.accentColor}40 0%, ${siteConfig.accentColor}25 20%, ${siteConfig.accentColor}10 40%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.8) 90%, white 100%)`}
-  >
-  </div>
+  <!-- Light/Dark gradients (switched via data-theme) -->
+  <div class="absolute inset-0 -z-10 hero-gradient hero-gradient-light"></div>
+  <div class="absolute inset-0 -z-10 hero-gradient hero-gradient-dark"></div>
   <svg
     aria-hidden="true"
     class="absolute inset-0 -z-10 size-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
@@ -273,6 +271,38 @@ const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/con
     }
   </div>
 </div>
+
+<style is:inline>
+  /* Switch visibility of gradients by theme */
+  .hero-gradient-light { display: block; }
+  .hero-gradient-dark { display: none; }
+  [data-theme='dark'] .hero-gradient-light { display: none; }
+  [data-theme='dark'] .hero-gradient-dark { display: block; }
+
+  /* Backgrounds using the provided accent color */
+  .hero-gradient-light {
+    background: radial-gradient(
+      ellipse 800px 1200px at 0% 0%,
+      var(--accent-color)40 0%,
+      var(--accent-color)25 20%,
+      var(--accent-color)10 40%,
+      rgba(255, 255, 255, 0.30) 70%,
+      rgba(255, 255, 255, 0.80) 90%,
+      #ffffff 100%
+    );
+  }
+  .hero-gradient-dark {
+    background: radial-gradient(
+      ellipse 800px 1200px at 0% 0%,
+      var(--accent-color)33 0%,
+      var(--accent-color)1f 20%,
+      var(--accent-color)14 40%,
+      rgba(0, 0, 0, 0.30) 70%,
+      rgba(0, 0, 0, 0.70) 90%,
+      #000000 100%
+    );
+  }
+</style>
 
 <style>
   @keyframes fadeIn {
