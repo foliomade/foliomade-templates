@@ -3,3 +3,32 @@
 body {
   font-family: 'IBM Plex Mono', monospace;
 }
+
+/* Theme baseline */
+html, body { background-color: var(--bg); color: var(--text); }
+
+/* Useful overrides for common colors used in components */
+.text-gray-900 { color: var(--text) !important; }
+.text-gray-800 { color: var(--text) !important; }
+.text-gray-700 { color: var(--muted) !important; }
+.text-gray-600 { color: var(--muted) !important; }
+.text-gray-500 { color: var(--muted) !important; }
+.text-gray-100 { color: color-mix(in oklab, var(--text) 85%, transparent) !important; }
+.bg-white { background-color: var(--card) !important; }
+.bg-gray-100 { background-color: color-mix(in oklab, var(--text) 8%, transparent) !important; }
+.bg-gray-50 { background-color: var(--card) !important; }
+.bg-gray-300 { background-color: color-mix(in oklab, var(--text) 25%, transparent) !important; }
+.bg-gray-400 { background-color: color-mix(in oklab, var(--text) 40%, transparent) !important; }
+.border-gray-100 { border-color: var(--card-border) !important; }
+.border-gray-200 { border-color: var(--card-border) !important; }
+.border-gray-300 { border-color: color-mix(in oklab, var(--text) 30%, transparent) !important; }
+
+/* SVG stroke mapping for dark mode */
+.stroke-gray-200 { stroke: color-mix(in oklab, var(--text) 25%, transparent) !important; }
+
+/* Header blur background class */
+#header.header-blur { background-color: color-mix(in oklab, var(--bg) 80%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+/* Theme icon visibility */
+[data-theme='light'] .icon-sun { display: none }
+[data-theme='dark'] .icon-moon { display: none }

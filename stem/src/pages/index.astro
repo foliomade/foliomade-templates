@@ -1,6 +1,8 @@
 ---
 export const prerender = false;
 import { fetchSiteConfig } from '../../../_shared/config';
+import Sun from '../icons/Sun.astro';
+import Moon from '../icons/Moon.astro';
 
 const portfolioId = Astro.url.searchParams.get('portfolioId');
 const siteConfig = await fetchSiteConfig(portfolioId);
@@ -27,10 +29,20 @@ function computeTimeline(e: any): TL {
   const end = parseDateFlexible(e.endDate) || (e.dateRange ? parseDateFlexible(String(e.dateRange).split(/\s*-\s*/)[1]) : null);
   const year = start ? String(start.getFullYear()) : '-';
   let duration = '-';
+
   if (start && end) {
     const ms = Math.max(0, end.getTime() - start.getTime());
     const years = ms / (1000 * 60 * 60 * 24 * 365.25);
-    duration = `${years.toFixed(2)} years`;
+    if(years >= 1) {
+      duration = `${years.toFixed(2)} years`;
+    } else {
+      const months = Math.round(years * 12);
+      if(months === 0) {
+        duration = `-`;
+      }else {
+        duration = `${months} month${months !== 1 ? 's' : ''}`;
+      }
+    }
   }
   const lines: string[] = Array.isArray(e.bullets) && e.bullets.length
     ? e.bullets
@@ -57,18 +69,33 @@ const timeline: TL[] = !notFound ? (siteConfig?.experience || []).map(computeTim
       <meta name="theme-color" content={siteConfig?.accentColor || '#3175D1'} />
       <meta name="msapplication-navbutton-color" content={siteConfig?.accentColor || '#3175D1'} />
 
+      <!-- Initialize theme early to avoid flash (FOUC) -->
+      <script is:inline>
+        (function () {
+          try {
+            const stored = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = stored || (prefersDark ? 'dark' : 'light');
+            document.documentElement.dataset.theme = theme;
+          } catch (_) {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        })();
+      </script>
+
       <style>
+        /* Accent is injected on <html>; ensure var exists if inline style fails */
         :root { --accent: {siteConfig?.accentColor || '#3175D1'}; }
-        /* Small utilities to adapt dynamic content gracefully */
+
+        /* Base (light) — preserve original Stem design */
         .pill { display:inline-block; padding:6px 10px; border-radius:20px; background:#eef2f7; border:1px solid #e5e9f2; margin:4px 6px 0 0; font-size:12px; }
         .muted { color:#64748b; }
         .card { background:#fff; border:1px solid #e7ecf2; border-radius:12px; padding:16px; margin:10px 0; }
         .btn-accent { background: var(--accent); color:#fff; border-radius:8px; padding:8px 12px; text-decoration:none; display:inline-block; }
         .social-links a { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:999px; border:1px solid #e5e9f2; color:#0f172a; margin-right:8px; transition: background .15s ease, color .15s ease; }
         .social-links a:hover { background: var(--accent); color:#fff; }
-      .social-links svg { width:18px; height:18px; fill: currentColor; }
-      /* Portfolio grid */
-      .portfolio-grid { display:flex; flex-wrap:wrap; gap: 16px; }
+        .social-links svg { width:18px; height:18px; fill: currentColor; }
+        .portfolio-grid { display:flex; flex-wrap:wrap; gap: 16px; }
         .portfolio-card { position:relative; flex:1 1 300px; min-width:260px; background:#ffffff; border:1px solid #e7ecf2; border-radius:12px; padding:22px; transition: box-shadow .18s ease, transform .18s ease; }
         .portfolio-card:hover { box-shadow: 0 4px 20px rgba(15,23,42,.08); transform: translateY(-2px); }
         .portfolio-card .content { position:relative; z-index:1; }
@@ -77,15 +104,61 @@ const timeline: TL[] = !notFound ? (siteConfig?.experience || []).map(computeTim
         .icon-link { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:999px; border:1px solid #e5e9f2; color:#0f172a; transition: background .15s ease, color .15s ease; }
         .icon-link:hover { background: var(--accent); color:#fff; text-decoration:none; }
         .icon-link svg { width:18px; height:18px; fill: currentColor; }
-        /* Experience bullets */
         .experience-bullets { margin: 8px 0 0; padding-left: 1px; list-style: disc; }
         .experience-bullets li { margin: 10px 0; color:#334155; }
-        /* Experience timeline accent overrides */
         .main-timeline .date-outer .date { border-color: var(--accent); }
+
+        /* Theme toggle button visuals (scoped) */
+
+        /* Floating theme toggle button */
+        .theme-toggle {
+          position: fixed; right: 16px; top: 16px; z-index: 1000;
+          width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+          border-radius: 999px; border: 1px solid #e5e9f2; color: #64748b; background: #ffffff;
+        }
+        [data-theme='dark'] .theme-toggle { background:#0b0f1a; color:#e5e7eb; border-color: rgba(148,163,184,.35); }
+        .theme-toggle:hover { border-color: var(--accent); }
+
+        /* Dark mode — targeted, non-destructive overrides */
+        [data-theme='dark'] body { background:#0b0f1a; color:#e5e7eb; }
+        [data-theme='dark'] .bg-light-gray { background:#0b0f1a !important; color:#e5e7eb; }
+        [data-theme='dark'] .muted { color:#9ca3af; }
+        /* Ensure headings are legible in dark mode */
+        [data-theme='dark'] h1,
+        [data-theme='dark'] h2,
+        [data-theme='dark'] h3,
+        [data-theme='dark'] h4,
+        [data-theme='dark'] h5,
+        [data-theme='dark'] h6 { color:#e5e7eb; }
+        [data-theme='dark'] .section-title { color:#e5e7eb; }
+        [data-theme='dark'] h5.title { color:#e5e7eb; }
+        [data-theme='dark'] .card,
+        [data-theme='dark'] .portfolio-card { background:#0f172a; border:1px solid rgba(148,163,184,.28); }
+        [data-theme='dark'] .pill { background: rgba(255,255,255,.06); border:1px solid rgba(148,163,184,.35); color:#e5e7eb; }
+        [data-theme='dark'] .link-chip { background: rgba(255,255,255,.06); border:1px solid rgba(148,163,184,.35); color:#e5e7eb; }
+        [data-theme='dark'] .icon-link { border-color: rgba(148,163,184,.28); color:#e5e7eb; }
+        [data-theme='dark'] .experience-bullets li { color:#9ca3af; }
+        [data-theme='dark'] .social-links a { border-color: rgba(148,163,184,.28); color:#e5e7eb; }
+        [data-theme='dark'] .portfolio-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.35); }
+        /* Timeline date text */
+        [data-theme='dark'] .main-timeline .date-outer .date .month { color:#9ca3af; }
+        [data-theme='dark'] .main-timeline .date-outer .date .year { color:#e5e7eb; }
+      </style>
+
+      <!-- Global icon visibility rules so they affect child components -->
+      <style is:global>
+        .theme-icon { display: inline-block; }
+        [data-theme='dark'] .icon-sun { display: none; }
+        [data-theme='light'] .icon-moon { display: none; }
       </style>
 
   </head>
   <body>
+    <!-- Theme toggle (floating top-right) -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme" type="button">
+      <Sun />
+      <Moon />
+    </button>
     {notFound ? (
       <main style="min-height: 100vh; display:grid; place-items:center; background:#0b0f1a; color:#e5e7eb;">
         <section style="text-align:center; max-width: 720px; padding: 2rem;">
@@ -259,6 +332,18 @@ const timeline: TL[] = !notFound ? (siteConfig?.experience || []).map(computeTim
             ))}
           </>
         )}
+
+        <!-- Theme toggle behavior -->
+        <script is:inline>
+          const themeBtn = document.querySelector('#theme-toggle');
+          const toggleTheme = () => {
+            const html = document.documentElement;
+            const next = html.dataset.theme === 'light' ? 'dark' : 'light';
+            html.dataset.theme = next;
+            try { localStorage.setItem('theme', next); } catch (_) {}
+          };
+          themeBtn?.addEventListener('click', toggleTheme);
+        </script>
       </>
     )}
   </body>

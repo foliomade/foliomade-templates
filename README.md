@@ -69,6 +69,10 @@ Recommended conventions:
 - Respect `siteConfig.accentColor` and include `siteConfig.scripts`
 - Show a graceful “Portfolio Not Found” state when data is missing
 
+### Theming
+
+- Dark mode and accent color patterns are standardized. See `THEME_GUIDE.md` for how to implement the theme toggle, icons, and accent color in new templates (use `zen` as reference).
+
 
 ## Sample Implementation
 

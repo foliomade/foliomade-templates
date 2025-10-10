@@ -15,6 +15,14 @@ Use this checklist when creating a new template under `templates/<your-template>
       - [ ] Graceful “not found” state when data is missing
 - [ ] `public/preview.png` (PNG, ~1600×900 or 1920×1080, < 600KB)
 
+### Theming (Dark Mode + Accent)
+
+- [ ] Implements accent color and dark mode (see `THEME_GUIDE.md`)
+  - [ ] `--accent` injected on root and `<meta name="theme-color">` set
+  - [ ] Early inline script sets `document.documentElement.dataset.theme`
+  - [ ] Toggle button with Sun/Moon icons; persists to `localStorage`
+  - [ ] CSS tokens for `:root` and `[data-theme='light']`; icon visibility rules
+
 ## Recommended
 
 - [ ] Semantic HTML and accessible patterns (labels, landmarks, contrast)

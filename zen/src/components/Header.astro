@@ -1,5 +1,7 @@
 ---
 import Menu from "@icons/Menu.astro";
+import Sun from "@icons/Sun.astro";
+import Moon from "@icons/Moon.astro";
 const { siteConfig } = Astro.props as { siteConfig: import('../../../_shared/config').PortfolioSiteConfig };
 
 const navLinks = [
@@ -10,16 +12,16 @@ const navLinks = [
 ---
 
 <header
-  class="sticky top-0 z-50 mx-auto flex max-w-5xl animate-slide-in justify-between bg-black px-5 py-6"
+  class="sticky top-0 z-50 mx-auto flex max-w-5xl animate-slide-in justify-between bg-[var(--bg-elevated)] px-5 py-6 pr-12 sm:pr-14 relative"
 >
-  <a href="#hero" aria-label="Home link" class="text-white font-semibold">
+  <a href="#hero" aria-label="Home link" class="text-[var(--text)] font-semibold">
     {siteConfig?.name}
   </a>
 
   <button
     type="button"
     id="menu-button"
-    class="px-1.5 text-neutral sm:hidden"
+    class="px-1.5 text-[var(--text-muted)] sm:hidden mr-12"
     aria-expanded="false"
     aria-controls="main-menu"
   >
@@ -27,7 +29,7 @@ const navLinks = [
   </button>
 
   <nav
-    class="absolute top-20 right-5 hidden rounded-xl border border-neutral/40 bg-black px-4 py-5 text-neutral sm:static sm:block sm:border-0 sm:bg-transparent sm:p-0"
+    class="absolute top-20 right-5 hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-5 text-[var(--text-muted)] sm:static sm:block sm:border-0 sm:bg-transparent sm:p-0"
     id="main-menu"
   >
     <ul class="gap-2 sm:flex">
@@ -35,7 +37,7 @@ const navLinks = [
         navLinks.map((link) => (
           <li class="relative">
             <a
-              class={`nav-item relative block p-2 text-sm font-medium transition-all duration-500 after:absolute after:bottom-0 after:left-2/4 after:h-2 after:w-1 after:-translate-x-2/4 after:text-primary after:opacity-0 after:content-['•'] hover:text-white`}
+              class={`nav-item relative block p-2 text-sm font-medium transition-all duration-500 after:absolute after:bottom-0 after:left-2/4 after:h-2 after:w-1 after:-translate-x-2/4 after:text-primary after:opacity-0 after:content-['•'] hover:text-[var(--text)]`}
               href={link.href}
             >
               {link.text}
@@ -45,6 +47,17 @@ const navLinks = [
       }
     </ul>
   </nav>
+
+  <!-- Theme toggle (top-right) -->
+  <button
+    id="theme-toggle"
+    type="button"
+    aria-label="Toggle color theme"
+    class="absolute right-5 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-primary"
+  >
+    <Sun />
+    <Moon />
+  </button>
 </header>
 
 <script is:inline>
@@ -71,9 +84,9 @@ const navLinks = [
         if (entry.isIntersecting) {
           navItems.forEach((item) => {
             if (item.getAttribute("href") === `#${entry.target.id}`) {
-              item.classList.add("text-white", "md:after:opacity-100");
+              item.classList.add("text-[var(--text)]", "md:after:opacity-100");
             } else {
-              item.classList.remove("text-white", "md:after:opacity-100");
+              item.classList.remove("text-[var(--text)]", "md:after:opacity-100");
             }
           });
         }
@@ -96,6 +109,16 @@ const navLinks = [
       });
     }
   };
+
+  // Theme toggling
+  const themeBtn = document.querySelector('#theme-toggle');
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    const next = html.dataset.theme === 'light' ? 'dark' : 'light';
+    html.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  };
+  themeBtn?.addEventListener('click', toggleTheme);
 </script>
 
 <style>
