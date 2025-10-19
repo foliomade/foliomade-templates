@@ -114,30 +114,27 @@ export function buildPortfolioSiteConfig(input: TemplateInput): PortfolioSiteCon
     education,
   };
 
+  const base = PUBLIC_APP_BASE_URL || '';
+  cfg.scripts = cfg.scripts || [];
+
   // Calendar widget: render floating "Schedule Time" button above chat if calendarUrl is present
   if (input.calendarUrl) {
-    const base = PUBLIC_APP_BASE_URL || '';
-    const calSrc = `${base}/widgets/calender.js?calendarUrl=${encodeURIComponent(input.calendarUrl)}`;
-    cfg.scripts = [...(cfg.scripts || []), calSrc];
+    cfg.scripts.push(`${base}/widgets/calender.js?calendarUrl=${encodeURIComponent(input.calendarUrl)}`);
   }
 
   // Initialize chat widget script from config to keep templates clean.
   // Uses same-origin API base by default inside the widget; only requires portfolioId.
   if (input.enableFaqs && input.id) {
-    const base = PUBLIC_APP_BASE_URL || '';
-    const src = `${base}/widgets/chat.min.js?portfolioId=${encodeURIComponent(input.id)}${
+    cfg.scripts.push(`${base}/widgets/chat.min.js?portfolioId=${encodeURIComponent(input.id)}${
       base ? `&apiBase=${encodeURIComponent(base)}` : ''
-    }`;
-    cfg.scripts = [...(cfg.scripts || []), src];
+    }`);
   }
 
   // Always include lightweight analytics widget if portfolio id is available
   if (input.id) {
-    const base = PUBLIC_APP_BASE_URL || '';
-    const aSrc = `${base}/widgets/analytics.min.js?portfolioId=${encodeURIComponent(input.id)}${
+    cfg.scripts.push(`${base}/widgets/analytics.min.js?portfolioId=${encodeURIComponent(input.id)}${
       base ? `&apiBase=${encodeURIComponent(base)}` : ''
-    }`;
-    cfg.scripts = [...(cfg.scripts || []), aSrc];
+    }`)
   }
 
   return cfg;

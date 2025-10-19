@@ -207,20 +207,16 @@ function buildPortfolioSiteConfig(input) {
     experience,
     education
   };
+  const base = PUBLIC_APP_BASE_URL || "";
+  cfg.scripts = cfg.scripts || [];
   if (input.calendarUrl) {
-    const base = PUBLIC_APP_BASE_URL || "";
-    const calSrc = `${base}/widgets/calender.js?calendarUrl=${encodeURIComponent(input.calendarUrl)}`;
-    cfg.scripts = [...cfg.scripts || [], calSrc];
+    cfg.scripts.push(`${base}/widgets/calender.js?calendarUrl=${encodeURIComponent(input.calendarUrl)}`);
   }
   if (input.enableFaqs && input.id) {
-    const base = PUBLIC_APP_BASE_URL || "";
-    const src = `${base}/widgets/chat.min.js?portfolioId=${encodeURIComponent(input.id)}${base ? `&apiBase=${encodeURIComponent(base)}` : ""}`;
-    cfg.scripts = [...cfg.scripts || [], src];
+    cfg.scripts.push(`${base}/widgets/chat.min.js?portfolioId=${encodeURIComponent(input.id)}${base ? `&apiBase=${encodeURIComponent(base)}` : ""}`);
   }
   if (input.id) {
-    const base = PUBLIC_APP_BASE_URL || "";
-    const aSrc = `${base}/widgets/analytics.min.js?portfolioId=${encodeURIComponent(input.id)}${base ? `&apiBase=${encodeURIComponent(base)}` : ""}`;
-    cfg.scripts = [...cfg.scripts || [], aSrc];
+    cfg.scripts.push(`${base}/widgets/analytics.min.js?portfolioId=${encodeURIComponent(input.id)}${base ? `&apiBase=${encodeURIComponent(base)}` : ""}`);
   }
   return cfg;
 }
