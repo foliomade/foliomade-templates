@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_BXASiUgp.mjs';
-import { manifest } from './manifest_3SUh2j4N.mjs';
+import { manifest } from './manifest_CqiTaecp.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -22,8 +22,8 @@ const _manifest = Object.assign(manifest, {
 });
 const _args = {
     "mode": "middleware",
-    "client": "file:///Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/dist/client/",
-    "server": "file:///Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/dist/server/",
+    "client": "file:///Users/samsonoyetola/workspace/foliomade/templates/devportfolio/dist/client/",
+    "server": "file:///Users/samsonoyetola/workspace/foliomade/templates/devportfolio/dist/server/",
     "host": false,
     "port": 4321,
     "assets": "_astro",

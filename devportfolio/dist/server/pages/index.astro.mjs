@@ -41,7 +41,7 @@ Experience
 </a> </li>`, hasEducation && renderTemplate`<li data-astro-cid-3ef6ksr2> <a href="#education" class="text-gray-700 hover:text-black transition-colors font-medium" data-astro-cid-3ef6ksr2>
 Education
 </a> </li>`);
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Header.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Header.astro", void 0);
 
 const $$Astro$6 = createAstro();
 const $$Hero = createComponent(($$result, $$props, $$slots) => {
@@ -82,7 +82,7 @@ I'm <span${addAttribute({ color: siteConfig.accentColor }, "style")} data-astro-
     );
   }
 </style> `;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Hero.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Hero.astro", void 0);
 
 const $$Astro$5 = createAstro();
 const $$About = createComponent(($$result, $$props, $$slots) => {
@@ -92,7 +92,7 @@ const $$About = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<section id="about" class="p-8 sm:p-12 md:p-16 lg:p-24"> <div> <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"> <div class="lg:col-span-4"> <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
 About Me
 </h2> <div class="w-[75px] h-[5px] mt-2 rounded-full"${addAttribute(`background-color: ${siteConfig.accentColor}`, "style")}></div> </div> <div class="lg:col-span-8 space-y-8"> <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600" style="white-space: pre-line;"> ${siteConfig.aboutMe} </p> ${siteConfig.resumeUrl && renderTemplate`<div class="pt-2"> <a${addAttribute(siteConfig.resumeUrl, "href")} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white"${addAttribute(`background-color: ${siteConfig.accentColor}`, "style")}> <span>View Resume</span> </a> </div>`} <div class="pt-4"> <div class="flex flex-wrap gap-3"> ${siteConfig.skills.map((skill) => renderTemplate`<span class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 text-gray-800 rounded-full text-sm sm:text-base md:text-lg font-medium hover:bg-gray-200 transition-colors duration-200"> ${skill} </span>`)} </div> </div> </div> </div> </div> </section>`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/About.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/About.astro", void 0);
 
 const $$Astro$4 = createAstro();
 const $$Projects = createComponent(($$result, $$props, $$slots) => {
@@ -112,7 +112,7 @@ Projects
     return renderTemplate`<div class="group relative">${renderComponent($$result, "Component", Component, { ...linkProps, "class": `block relative p-4 sm:p-6 md:p-8 bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-200 transition-all duration-300 ${project.link ? "hover:bg-white hover:shadow-xl hover:border-gray-300 hover:-translate-y-1" : ""}` }, { "default": ($$result2) => renderTemplate`${project.link && renderTemplate`<div class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 group-hover:bg-gray-700"><svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"></path></svg></div>`}<div class="space-y-4"><div><span class="text-sm font-mono"${addAttribute({ color: siteConfig.accentColor }, "style")}>
 0${index + 1}</span><h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">${project.name}</h3></div><p${addAttribute(`text-base sm:text-lg text-gray-600 leading-relaxed ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`, "class")}>${project.description}</p>${project.skills && project.skills.length > 0 && renderTemplate`<div class="flex flex-wrap gap-1.5 sm:gap-2 pt-2">${project.skills.map((skill) => renderTemplate`<span${addAttribute(`px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gray-900 text-white rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${project.link ? "group-hover:bg-gray-800" : ""}`, "class")}>${skill}</span>`)}</div>`}</div>` })}</div>`;
   })}</div></div></div></div></section>`}`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Projects.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Projects.astro", void 0);
 
 const $$Astro$3 = createAstro();
 const $$Experience = createComponent(($$result, $$props, $$slots) => {
@@ -123,7 +123,7 @@ const $$Experience = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${hasExperience && renderTemplate`${maybeRenderHead()}<section id="experience" class="p-8 sm:p-12 md:p-16 lg:p-24"><div><div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"><div class="lg:col-span-4"><h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
 Experience
 </h2><div class="w-[75px] h-[5px] mt-2 rounded-full"${addAttribute(`background-color: ${siteConfig.accentColor}`, "style")}></div></div><div class="lg:col-span-8"><div class="relative">${siteConfig.experience.map((exp, index) => renderTemplate`<div class="relative mb-12 last:mb-0"><div class="absolute left-1/2 -top-2 w-4 h-4 bg-white border-2 rounded-full -translate-x-1/2 z-20 transition-all duration-300"${addAttribute(`border-color: ${siteConfig.accentColor}; background-color: ${siteConfig.accentColor}`, "style")}></div>${index < siteConfig.experience.length - 1 && renderTemplate`<div class="absolute left-1/2 bottom-0 w-0.5 h-12 bg-gray-300 -translate-x-1/2 translate-y-full z-10"></div>`}<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 hover:shadow-md transition-shadow duration-300"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4"><div><h3 class="text-lg sm:text-xl font-semibold text-gray-900">${exp.title}</h3><p class="text-base sm:text-lg"${addAttribute(`color: ${siteConfig.accentColor}`, "style")}>${exp.company}</p></div><span class="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">${exp.dateRange}</span></div><ul class="space-y-2">${exp.bullets.map((bullet) => renderTemplate`<li class="flex items-start"><span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0"></span><span class="text-sm sm:text-base text-gray-600">${bullet}</span></li>`)}</ul>${exp.techStack && renderTemplate`<div class="mt-4 flex flex-wrap gap-2">${exp.techStack.split(/[,|]/).map((t) => t.trim()).filter(Boolean).map((t) => renderTemplate`<span class="inline-block rounded-full bg-gray-100 text-gray-700 px-2.5 py-1 text-xs">${t}</span>`)}</div>`}</div></div>`)}</div></div></div></div></section>`}`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Experience.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Experience.astro", void 0);
 
 const $$Astro$2 = createAstro();
 const $$Education = createComponent(($$result, $$props, $$slots) => {
@@ -134,7 +134,7 @@ const $$Education = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${hasEducation && renderTemplate`${maybeRenderHead()}<section id="education" class="p-8 sm:p-12 md:p-16 lg:p-24"><div><div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"><div class="lg:col-span-4"><h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
 Education
 </h2><div class="w-[75px] h-[5px] mt-2 rounded-full"${addAttribute(`background-color: ${siteConfig.accentColor}`, "style")}></div></div><div class="lg:col-span-8"><div class="space-y-8">${siteConfig.education.map((edu) => renderTemplate`<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 hover:shadow-md transition-shadow duration-300"><div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4"><div><h3 class="text-lg sm:text-xl font-semibold text-gray-900">${edu.degree}</h3><p class="text-base sm:text-lg"${addAttribute(`color: ${siteConfig.accentColor}`, "style")}>${edu.school}</p></div><span class="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">${edu.dateRange}</span></div><ul class="space-y-2">${edu.achievements.map((achievement) => renderTemplate`<li class="flex items-start"><span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0"></span><span class="text-sm sm:text-base text-gray-600">${achievement}</span></li>`)}</ul></div>`)}</div></div></div></div></section>`}`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Education.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Education.astro", void 0);
 
 const $$Astro$1 = createAstro();
 const $$Footer = createComponent(($$result, $$props, $$slots) => {
@@ -157,7 +157,7 @@ Powered by
 <a href="https://foliomade.com" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 text-gray-600 hover:text-[var(--accent-color)] transition-colors"${addAttribute(`--accent-color: ${siteConfig.accentColor}`, "style")}>
 Foliomade
 </a> </p> </div> </div> </div> <!-- Decorative pattern --> <div class="absolute inset-0 -z-10 overflow-hidden"> <svg aria-hidden="true" class="absolute bottom-0 left-0 w-full h-24 text-gray-100"> <pattern id="footer-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"> <path d="M0 50 Q 25 40, 50 50 T 100 50" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"></path> </pattern> <rect width="100%" height="100%" fill="url(#footer-pattern)"></rect> </svg> </div> </footer>`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/components/Footer.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/components/Footer.astro", void 0);
 
 const DEFAULT_ACCENT = "#14b8a6";
 const PUBLIC_APP_BASE_URL = typeof import.meta !== "undefined" && import.meta?.env?.PUBLIC_APP_BASE_URL || typeof process !== "undefined" && process.env?.PUBLIC_APP_BASE_URL || "";
@@ -277,9 +277,9 @@ const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const siteConfig = await fetchSiteConfig(portfolioId);
   const notFound = !portfolioId || !siteConfig;
   return renderTemplate(_b || (_b = __template(['<html lang="en"> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator"', '><meta name="description"', '><!-- Theming for browsers using the portfolio accent color --><meta name="theme-color"', '><meta name="msapplication-navbutton-color"', '><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"><title>', "</title><script>\n      (function () {\n        try {\n          const stored = localStorage.getItem('theme');\n          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;\n          const theme = stored || (prefersDark ? 'dark' : 'light');\n          document.documentElement.dataset.theme = theme;\n        } catch (e) { document.documentElement.dataset.theme = 'light'; }\n      })();\n    <\/script>", "</head> <body", "> ", " </body> </html>"])), addAttribute(Astro2.generator, "content"), addAttribute(siteConfig?.description || "Developer portfolio", "content"), addAttribute(siteConfig?.accentColor || "#22c55e", "content"), addAttribute(siteConfig?.accentColor || "#22c55e", "content"), siteConfig ? `${siteConfig?.name} - ${siteConfig?.title}` : "Portfolio Not Found", renderHead(), addAttribute(`--accent: ${siteConfig?.accentColor || "#22c55e"}`, "style"), notFound ? renderTemplate`<main style="min-height: 100vh; display:grid; place-items:center; background:#0b0f1a; color:#e5e7eb;"> <section style="text-align:center; max-width: 720px; padding: 2rem;"> <h1 style="font-size: clamp(2.25rem, 6vw, 4rem); line-height:1.05; margin:0 0 .75rem; font-weight:800;">Portfolio Not Found</h1> <p style="color:#9ca3af; font-size: clamp(1rem, 1.2vw, 1.15rem); margin: 0 0 1.5rem;">The requested portfolio is private or does not exist.</p> <a href="/" style="display:inline-block; padding:.7rem 1rem; border-radius:999px; border:1px solid rgba(148,163,184,.35); color:#e5e7eb; text-decoration:none; background-color: rgba(255,255,255,.06);">← Back to Home</a> </section> </main>` : renderTemplate`${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", $$Header, { "siteConfig": siteConfig })} <section> ${renderComponent($$result2, "Hero", $$Hero, { "siteConfig": siteConfig })} ${renderComponent($$result2, "About", $$About, { "siteConfig": siteConfig })} ${renderComponent($$result2, "Projects", $$Projects, { "siteConfig": siteConfig })} ${renderComponent($$result2, "Experience", $$Experience, { "siteConfig": siteConfig })} ${renderComponent($$result2, "Education", $$Education, { "siteConfig": siteConfig })} </section> ${renderComponent($$result2, "Footer", $$Footer, { "siteConfig": siteConfig })} ${siteConfig?.scripts && siteConfig.scripts.length > 0 && renderTemplate`${renderComponent($$result2, "Fragment", Fragment, {}, { "default": async ($$result3) => renderTemplate`${siteConfig.scripts.map((src) => renderTemplate(_a || (_a = __template(["<script", " defer><\/script>"])), addAttribute(src, "src")))}` })}`}` })}`);
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/pages/index.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/pages/index.astro", void 0);
 
-const $$file = "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/devportfolio/src/pages/index.astro";
+const $$file = "/Users/samsonoyetola/workspace/foliomade/templates/devportfolio/src/pages/index.astro";
 const $$url = "/t/devportfolio";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

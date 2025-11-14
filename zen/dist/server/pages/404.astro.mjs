@@ -11,9 +11,9 @@ Create a clean, modern portfolio from your resume — share it anywhere, embed i
 </p> <div class="row" data-astro-cid-zetdm5md> <a class="btn primary" href="/" data-astro-cid-zetdm5md>Create a portfolio using your resume</a> <a class="btn secondary" href="/" data-astro-cid-zetdm5md>Go back home</a> </div> <footer data-astro-cid-zetdm5md>
 Crafted with <a href="/" rel="noopener" data-astro-cid-zetdm5md>Foliomade</a> — a simple way to publish a beautiful portfolio from your resume.
 </footer> </section> </main> </body></html>`;
-}, "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/zen/src/pages/404.astro", void 0);
+}, "/Users/samsonoyetola/workspace/foliomade/templates/zen/src/pages/404.astro", void 0);
 
-const $$file = "/Users/samsonoyetola/workspace/NextJs/foliomade-monorepo/foliomade/templates/zen/src/pages/404.astro";
+const $$file = "/Users/samsonoyetola/workspace/foliomade/templates/zen/src/pages/404.astro";
 const $$url = "/t/zen/404";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
